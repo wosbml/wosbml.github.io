@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R4 / R5 / Membres - Alliance WOS</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Écran de chargement -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Chargement des membres...</p>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>BML Alliance - Whiteout Survival 1884</h1>
+      <nav>
+        <a href="index.html">Accueil</a>
+        <a href="r4r5.html" class="active">Membres</a>
+        <a href="sheet.html">Tableau d'event</a>
+        <a href="tutoriel.html">Tutoriel</a>
+        <a href="reglement.html">Règlement</a>
+      </nav>
+    </div>
+    <div class="language-switcher">
+      <a href="lang/en/membres_en.html">
+        <img src="data/en-flag.png" alt="English" style="width:50px; height:auto;" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Infos Joueurs R4 / R5 / Membres</h2>
+    </section>
+
+    <div class="section" id="r5-section">
+      <h2 class="section-title">R5</h2>
+      <div id="r5-players" class="players-container"></div>
+    </div>
+
+    <div class="section" id="r4-section">
+      <h2 class="section-title">R4</h2>
+      <div id="r4-players" class="players-container"></div>
+    </div>
+
+    <div class="section" id="members-section">
+      <h2 class="section-title">Membres</h2>
+      <div id="members-players" class="players-container"></div>
+    </div>
+  </main>
+
+  <div class="discord-image-button">
+    <a id="discord-link" target="_blank">
+      <img src="/data/discord.png" alt="Rejoindre notre Discord" />
+    </a>
+  </div>
+
+  <script src="/data/config.js"></script>
+  <script>
+    document.getElementById('discord-link').href = discordLink;
+  </script>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Alliance WOS - Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    const r5Ids = new Set(['287973128']);
+    const r4Ids = new Set(['402415198', '306582453', '286023499', '368316527', '307141025', '367247233', '286449474', '3653658242', '369331424']);
+
+    const sheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsitCfZ05OCMjxMb0LCpzyRwEZ1sRZ94cHvEeky4_yZ3UZeHF7-xbAkFgN3SovxkbsCCeHNWy9gFRv/pub?gid=0&single=true&output=csv&_=' + Date.now();
+
+
+    function csvToArray(str, delimiter = ',') {
+      const lines = str.trim().split('\n');
+      const headers = lines.shift().split(delimiter).map(h => h.trim());
+      return lines.map(line => {
+        const values = line.split(delimiter);
+        const obj = {};
+        headers.forEach((header, i) => {
+          obj[header] = values[i]?.trim() || '';
+        });
+        return obj;
+      });
+    }
+
+    function createPlayerCard(pseudo, avatarUrl) {
+      const div = document.createElement('div');
+      div.className = 'player';
+
+      const avatar = avatarUrl && avatarUrl.startsWith('http')
+        ? avatarUrl
+        : 'https://placehold.co/100x100?text=No+Avatar&font=roboto';
+
+      div.innerHTML = `
+        <div class="avatar" style="background-image: url('${avatar}');"></div>
+        <div class="pseudo" title="${pseudo}">${pseudo}</div>
+      `;
+      return div;
+    }
+
+    async function loadMembers() {
+      try {
+        const response = await fetch(sheetCSVUrl);
+        const csvText = await response.text();
+        const data = csvToArray(csvText);
+
+        const r5Players = [];
+        const r4Players = [];
+        const members = [];
+
+        data.forEach(row => {
+          const id = row['ID'] || row['id'] || row['Fid'] || row['fid'] || '';
+          const pseudo = row['Pseudo'] || row['pseudo'] || row['Nickname'] || row['nickname'] || '';
+          let avatar = row['Avatar URL'] || '';
+
+          avatar = avatar.replace(/^"+|"+$/g, '').trim();
+          if (!id || !pseudo) return;
+
+          const avatarValid = avatar.startsWith('http') ? avatar : '';
+
+          if (r5Ids.has(id)) {
+            r5Players.push({ pseudo, avatar: avatarValid });
+          } else if (r4Ids.has(id)) {
+            r4Players.push({ pseudo, avatar: avatarValid });
+          } else {
+            members.push({ pseudo, avatar: avatarValid });
+          }
+        });
+
+        const r5Container = document.getElementById('r5-players');
+        const r4Container = document.getElementById('r4-players');
+        const membersContainer = document.getElementById('members-players');
+
+        r5Players.forEach(p => r5Container.appendChild(createPlayerCard(p.pseudo, p.avatar)));
+        r4Players.forEach(p => r4Container.appendChild(createPlayerCard(p.pseudo, p.avatar)));
+        members.forEach(p => membersContainer.appendChild(createPlayerCard(p.pseudo, p.avatar)));
+
+        // Masquer le loader une fois le chargement terminé
+        document.getElementById('loader').style.display = 'none';
+
+      } catch (err) {
+        console.error('Erreur chargement membres:', err);
+        document.getElementById('loader').innerHTML = '<p>Erreur lors du chargement.</p>';
+      }
+    }
+
+    loadMembers();
+  </script>
+</body>
+</html>

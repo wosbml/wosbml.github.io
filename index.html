@@ -1,12 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon Site</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alliance WOS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <h1>Bienvenue sur mon site GitHub Pages !</h1>
-  <p>Fait en 2 minutes 🚀</p>
+
+  <header>
+    <div class="container">
+      <h1>Alliance Wankil Whiteout Survival 1911</h1>
+      <nav>
+        <a href="index.html" class="active">Accueil</a>
+        <a href="membres.html">Membres</a>
+        <a href="sheet.html">Tableau d'event</a>
+        <a href="tutoriel.html">Tutoriel</a>
+        <a href="reglement.html">Règlement</a>
+      </nav>
+    </div>
+    <div class="language-switcher">
+      <a href="lang/en/index_en.html">
+        <img src="data/en-flag.png" alt="English" style="width:50px; height:auto;" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Bienvenue dans notre alliance</h2>
+    </section>
+
+    <section class="content">
+      <h3>Présentation de l'alliance</h3>
+      <div class="alliance-intro improved">
+
+        <p class="intro-title">🇫🇷 <strong>BML – Alliance française recrute</strong></p>
+        <p>Nous cherchons des Français actifs pour nous rejoindre sur le serveur <strong>1884</strong> 🌍</p>
+
+        <h4 class="category-title">🎯 Pourquoi nous rejoindre ?</h4>
+        <p>
+          ➡️ Leaders expérimentés et alliance bien implantée sur le serveur.<br />
+          ➡️ Bonne ambiance sur le chat 💬 Membres accueillants et bienveillants 🤗<br />
+          ➡️ Organisation solide pour les événements 💥 Stratégies efficaces 🧠<br />
+          ➡️ Sérieux sans se prendre au sérieux 😎<br />
+          ➡️ 🐻 Chasse à l’ours & autres events à <strong>19h UTC</strong> ⏰
+        </p>
+
+        <h4 class="category-title">🕊️ Serveur 1884 : 100% pacifique</h4>
+        <p>
+          🛡️ Pas de NAP : nous fonctionnons sur des règles régionales.<br />
+          🤝 Très bonne entente entre alliances.<br />
+          🎉 Tout le monde s’amuse ENSEMBLE.<br />
+          📲 Discord régional actif.
+        </p>
+
+        <h4 class="category-title">🗺️ Exemples de fun interne</h4>
+        <p>
+          📍 Attribution des forts & bastions via un tournoi de <em>pierre, feuille, ciseaux</em> ✂️📄🪨<br />
+          🥊 Organisation de tournois entre volontaires durant l’event <strong>Frères d’armes</strong> 🧑‍🤝‍🧑
+        </p>
+
+        <h4 class="category-title">📣 Rejoins-nous !</h4>
+        <p>
+          👤 Joueur solo ou petite alliance souhaitant transférer ? <strong>Contacte-moi</strong> pour en savoir plus !
+        </p>
+
+        <p class="contact">
+          🌍 <em>If you are not French and yet interested in coming to 1884, contact me also. I have many friends who will enjoy having you! 😊</em>
+        </p>
+
+      </div>
+
+      <div class="discord-image-button">
+        <a id="discord-link" target="_blank">
+          <img src="/data/discord.png" alt="Rejoindre notre Discord" />
+        </a>
+      </div>
+
+      <script src="/data/config.js"></script>
+      <script>
+        document.getElementById('discord-link').href = discordLink;
+      </script>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Alliance WOS - Tous droits réservés.</p>
+    </div>
+  </footer>
 </body>
 </html>
