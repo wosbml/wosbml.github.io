@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test récupération Google Doc</title>
+</head>
+<body>
+  <h1>Données extraites Google Doc</h1>
+  <pre id="output">Chargement...</pre>
+
+  <script>
+    // URL de la Web App Google Apps Script (à remplacer plus tard)
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxY_R3OO8l4B0WcRs_TC-zgNQPpxi2c4M7az095ip0ctim-Tkpy71WynaMQcYFgfyCOjQ/exec';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('output').textContent = 'Erreur : ' + err;
+      });
+  </script>
+</body>
+</html>
