@@ -501,7 +501,6 @@ footer {
   }
 }
 
-/* TABLEAU TUTORIEL */
 .scrollable-table {
   overflow-x: auto;
   margin-top: 30px;
@@ -515,6 +514,7 @@ footer {
   overflow: hidden;
   box-shadow: 0 0 15px #5bc0f880;
   font-size: 0.95rem;
+  min-width: 600px; /* important pour forcer le scroll horizontal sur petits écrans */
 }
 
 .styled-table thead {
@@ -531,6 +531,7 @@ footer {
   border-bottom: 1px solid #31415a;
   color: #f0f2f5;
   text-align: center;
+  white-space: nowrap;
 }
 
 .styled-table td small {
@@ -543,18 +544,35 @@ footer {
   background-color: #25334a;
 }
 
-/* Garder la cellule rowspan visible et non transparente au hover */
+/* Garder la cellule rowspan visible au hover */
 .styled-table tbody tr:hover td[rowspan] {
-  background-color: #1f273b; /* couleur proche du fond pour bien la voir */
+  background-color: #1f273b;
 }
 
-/* Style spécifique pour les liens dans le tableau des liens */
+/* Liens dans le tableau des liens */
 #table-liens a {
-  color: #f0f2f5;          /* orange (ton thème) */
-  text-decoration: none;   /* pas de souligné */
+  color: #f0f2f5;
+  text-decoration: none;
   font-weight: bold;
 }
 
 #table-liens a:hover {
   text-decoration: underline;
+}
+
+/* RESPONSIVE DESIGN : petit écran */
+@media screen and (max-width: 600px) {
+  .styled-table {
+    font-size: 0.85rem;
+    min-width: 100%; /* toujours scrollable mais évite trop petit */
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 10px 8px;
+  }
+
+  .scrollable-table {
+    margin: 15px 0;
+  }
 }
