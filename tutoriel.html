@@ -151,8 +151,13 @@
       .then(text => {
         const rows = parseCSV(text);
 
+        // Découpe brute
         const tutorielRows = rows.slice(tutorielStart, tutorielEnd + 1);
         const liensRows = rows.slice(liensStart, liensEnd + 1);
+
+        // On enlève la ligne d'en-tête car déjà présente dans le <thead> HTML
+        if (tutorielRows.length > 0) tutorielRows.shift();
+        if (liensRows.length > 0) liensRows.shift();
 
         fillTable("table-tutoriel", tutorielRows);
         fillTable("table-liens", liensRows);
@@ -163,6 +168,7 @@
         fillTable("table-liens", errorMsg);
         console.error(e);
       });
+
   </script>
 
 </body>
