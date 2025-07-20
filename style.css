@@ -538,11 +538,23 @@ footer {
   font-size: 0.8em;
 }
 
-.styled-table tbody tr:hover td {
+/* Surbrillance : toutes les cellules sauf celles avec rowspan */
+.styled-table tbody tr:hover td:not([rowspan]) {
   background-color: #25334a;
 }
 
+/* Garder la cellule rowspan visible et non transparente au hover */
 .styled-table tbody tr:hover td[rowspan] {
-  background-color: transparent;
+  background-color: #1f273b; /* couleur proche du fond pour bien la voir */
 }
 
+/* Style spécifique pour les liens dans le tableau des liens */
+#table-liens a {
+  color: #f0f2f5;          /* orange (ton thème) */
+  text-decoration: none;   /* pas de souligné */
+  font-weight: bold;
+}
+
+#table-liens a:hover {
+  text-decoration: underline;
+}

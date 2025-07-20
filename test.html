@@ -2,24 +2,168 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Test récupération Google Doc</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tutoriel - Alliance WOS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <h1>Données extraites Google Doc</h1>
-  <pre id="output">Chargement...</pre>
+
+  <header>
+    <div class="container">
+      <h1>BML Alliance - Whiteout Survival 1884</h1>
+      <nav>
+        <a href="index.html">Accueil</a>
+        <a href="membres.html">Membres</a>
+        <a href="sheet.html">Tableau d'event</a>
+        <a href="tutoriel.html" class="active">Tutoriel</a>
+        <a href="reglement.html">Règlement</a>
+      </nav>
+    </div>
+    <div class="language-switcher">
+      <a href="lang/en/tutoriel_en.html">
+        <img src="data/en-flag.png" alt="English" style="width:50px; height:auto;" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h2 class="section-title">Tableau des compositions recommandées</h2>
+      <div class="scrollable-table">
+        <table class="styled-table" id="table-tutoriel">
+          <thead>
+            <tr>
+              <th>Mode</th>
+              <th>Action</th>
+              <th>Att / Def</th>
+              <th>Premier héros</th>
+              <th>Ratio (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5">Chargement des données...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" style="margin-top: 40px;">
+      <h2 class="section-title">Liens utiles</h2>
+      <div class="scrollable-table">
+        <table class="styled-table" id="table-liens">
+          <thead>
+            <tr>
+              <th>Événement</th>
+              <th>Tuto (Français)</th>
+              <th>Tuto (English)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3">Chargement des données...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Alliance WOS - Tous droits réservés.</p>
+    </div>
+  </footer>
 
   <script>
-    // URL de la Web App Google Apps Script (à remplacer plus tard)
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbxY_R3OO8l4B0WcRs_TC-zgNQPpxi2c4M7az095ip0ctim-Tkpy71WynaMQcYFgfyCOjQ/exec';
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzdncbEAoO_ABAJOhzCjQ1HRFkTcNe3fl1MNIg_o9Wrmc0WE0x1-UTechJQquTvhTbPoUukETEuE-Q/pub?output=csv";
 
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    const tutorielStart = 0;
+    const tutorielEnd = 15;
+    const liensStart = 20;
+    const liensEnd = 35;
+
+    function parseCSV(text) {
+      const lines = [];
+      let line = [];
+      let current = "";
+      let inQuotes = false;
+
+      for(let i = 0; i < text.length; i++) {
+        let c = text[i];
+        if(c === '"') {
+          if(inQuotes && text[i+1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if(c === ',' && !inQuotes) {
+          line.push(current);
+          current = "";
+        } else if((c === '\n' || c === '\r') && !inQuotes) {
+          if(c === '\r' && text[i+1] === '\n') i++;
+          line.push(current);
+          lines.push(line);
+          line = [];
+          current = "";
+        } else {
+          current += c;
+        }
+      }
+      if(current.length > 0 || line.length > 0) {
+        line.push(current);
+        lines.push(line);
+      }
+      return lines;
+    }
+
+    function fillTable(tableId, rows) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = "";
+
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+
+        const limitedRow = (tableId === "table-liens") ? row.slice(0, 3) : row;
+
+        limitedRow.forEach((cell, index) => {
+          const td = document.createElement('td');
+
+          if (tableId === "table-liens" && (index === 1 || index === 2) && cell.startsWith("http")) {
+            const a = document.createElement('a');
+            a.href = cell;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = (index === 1) ? "lien" : "link";
+            td.appendChild(a);
+          } else {
+            td.textContent = cell;
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(text => {
+        const rows = parseCSV(text);
+
+        const tutorielRows = rows.slice(tutorielStart, tutorielEnd + 1);
+        const liensRows = rows.slice(liensStart, liensEnd + 1);
+
+        fillTable("table-tutoriel", tutorielRows);
+        fillTable("table-liens", liensRows);
       })
-      .catch(err => {
-        document.getElementById('output').textContent = 'Erreur : ' + err;
+      .catch(e => {
+        const errorMsg = [["Erreur de chargement"]];
+        fillTable("table-tutoriel", errorMsg);
+        fillTable("table-liens", errorMsg);
+        console.error(e);
       });
   </script>
+
 </body>
 </html>

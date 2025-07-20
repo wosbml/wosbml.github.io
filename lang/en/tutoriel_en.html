@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tutorial - WOS Alliance</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -13,11 +13,11 @@
     <div class="container">
       <h1>BML Alliance - Whiteout Survival 1884</h1>
       <nav>
-        <a href="index_en.html">Home</a>
-        <a href="membres_en.html">Members</a>
-        <a href="sheet_en.html">Event Board</a>
-        <a href="tutoriel_en.html" class="active">Tutorial</a>
-        <a href="reglement_en.html">Rules</a>
+        <a href="/lang/en/index_en.html">Home</a>
+        <a href="/lang/en/membres_en.html">Members</a>
+        <a href="/lang/en/sheet_en.html">Event Table</a>
+        <a href="/lang/en/tutoriel_en.html" class="active">Tutorial</a>
+        <a href="/lang/en/reglement_en.html">Rules</a>
       </nav>
     </div>
     <div class="language-switcher">
@@ -29,54 +29,42 @@
 
   <main>
     <section class="section">
-      <h2 class="section-title">Recommended Composition Table</h2>
+      <h2 class="section-title">Recommended Compositions Table</h2>
       <div class="scrollable-table">
-        <table class="styled-table">
+        <table class="styled-table" id="table-tutoriel">
           <thead>
             <tr>
               <th>Mode</th>
               <th>Action</th>
               <th>Att / Def</th>
-              <th>First Hero</th>
+              <th>Main Hero</th>
               <th>Ratio (%)</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td rowspan="3">GENERAL<br><small>(strong / bastion / complex)</small></td><td>Create</td><td>Strongest (excluding Gina)</td><td></td><td>50 / 20 / 30</td></tr>
-            <tr><td>Join</td><td>Rally Attack</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 20 / 30</td></tr>
-            <tr><td></td><td>Rally Defense</td><td>Patrick / Sergei</td><td>60 / 20 / 20</td></tr>
-
-            <tr><td rowspan="2">BEAR HUNT</td><td>Create</td><td>Strongest (excluding Gina)</td><td></td><td>20 / 40 / 40 or 10 / 20 / 70</td></tr>
-            <tr><td>Join</td><td>Rally Attack</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>20 / 40 / 40 or 10 / 20 / 70</td></tr>
-
-            <tr><td>CRAZY JOE</td><td></td><td></td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>70 / 30 / 0 or 60 / 40 / 0</td></tr>
-
-            <tr><td rowspan="3">CASTLE</td><td>Create</td><td>Strongest (excluding Gina)</td><td></td><td>50 / 30 / 20</td></tr>
-            <tr><td>Join</td><td>Rally Attack</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 30 / 20</td></tr>
-            <tr><td></td><td>Rally Defense</td><td>Patrick / Sergei</td><td>50 / 30 / 20</td></tr>
-
-            <tr><td rowspan="3">CASTLE TURRETS</td><td>Create</td><td>Strongest (excluding Gina)</td><td></td><td>40 / 20 / 40</td></tr>
-            <tr><td>Join</td><td>Rally Attack</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>40 / 20 / 40</td></tr>
-            <tr><td></td><td>Rally Defense</td><td>Patrick / Sergei</td><td>50 / 30 / 20</td></tr>
-
-            <tr><td rowspan="3">FOUNDRY</td><td></td><td>Ally Reinforcement</td><td>Patrick / Sergei</td><td>60 / 10 / 30 or 50 / 20 / 30</td></tr>
-            <tr><td>Create</td><td>Strongest (excluding Gina)</td><td></td><td>50 / 20 / 30</td></tr>
-            <tr><td>Join</td><td>Rally Attack</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 20 / 30</td></tr>
+            <tr><td colspan="5">Loading data...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <div class="discord-image-button">
-      <a id="discord-link" target="_blank">
-        <img src="/data/discord.png" alt="Join our Discord" />
-      </a>
-    </div>
-
-    <script src="/data/config.js"></script>
-    <script>
-      document.getElementById('discord-link').href = discordLink;
-    </script>
+    <section class="section" style="margin-top: 40px;">
+      <h2 class="section-title">Useful Links</h2>
+      <div class="scrollable-table">
+        <table class="styled-table" id="table-liens">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Tutorial (FR)</th>
+              <th>Tutorial (EN)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3">Loading data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -84,5 +72,97 @@
       <p>&copy; 2025 WOS Alliance - All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzdncbEAoO_ABAJOhzCjQ1HRFkTcNe3fl1MNIg_o9Wrmc0WE0x1-UTechJQquTvhTbPoUukETEuE-Q/pub?output=csv";
+
+    const tutorielStart = 0;
+    const tutorielEnd = 15;
+    const liensStart = 20;
+    const liensEnd = 35;
+
+    function parseCSV(text) {
+      const lines = [];
+      let line = [];
+      let current = "";
+      let inQuotes = false;
+
+      for(let i = 0; i < text.length; i++) {
+        let c = text[i];
+        if(c === '"') {
+          if(inQuotes && text[i+1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if(c === ',' && !inQuotes) {
+          line.push(current);
+          current = "";
+        } else if((c === '\n' || c === '\r') && !inQuotes) {
+          if(c === '\r' && text[i+1] === '\n') i++;
+          line.push(current);
+          lines.push(line);
+          line = [];
+          current = "";
+        } else {
+          current += c;
+        }
+      }
+      if(current.length > 0 || line.length > 0) {
+        line.push(current);
+        lines.push(line);
+      }
+      return lines;
+    }
+
+    function fillTable(tableId, rows) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = "";
+
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+        const limitedRow = (tableId === "table-liens") ? row.slice(0, 3) : row;
+
+        limitedRow.forEach((cell, index) => {
+          const td = document.createElement('td');
+
+          if (tableId === "table-liens" && (index === 1 || index === 2) && cell.startsWith("http")) {
+            const a = document.createElement('a');
+            a.href = cell;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = (index === 1) ? "lien" : "link";
+            td.appendChild(a);
+          } else {
+            td.textContent = cell;
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(text => {
+        const rows = parseCSV(text);
+
+        const tutorielRows = rows.slice(tutorielStart, tutorielEnd + 1);
+        const liensRows = rows.slice(liensStart, liensEnd + 1);
+
+        fillTable("table-tutoriel", tutorielRows);
+        fillTable("table-liens", liensRows);
+      })
+      .catch(e => {
+        const errorMsg = [["Loading error"]];
+        fillTable("table-tutoriel", errorMsg);
+        fillTable("table-liens", errorMsg);
+        console.error(e);
+      });
+  </script>
+
 </body>
 </html>

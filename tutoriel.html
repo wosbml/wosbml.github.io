@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tutoriel - Alliance WOS</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -24,13 +24,14 @@
       <a href="lang/en/tutoriel_en.html">
         <img src="data/en-flag.png" alt="English" style="width:50px; height:auto;" />
       </a>
+    </div>
   </header>
 
   <main>
     <section class="section">
       <h2 class="section-title">Tableau des compositions recommandées</h2>
       <div class="scrollable-table">
-        <table class="styled-table">
+        <table class="styled-table" id="table-tutoriel">
           <thead>
             <tr>
               <th>Mode</th>
@@ -41,41 +42,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td rowspan="3">GÉNÉRAL<br><small>(fort / bastion / complexe)</small></td><td>Créer</td><td>Les plus forts (hors Gina)</td><td></td><td>50 / 20 / 30</td></tr>
-            <tr><td>Rejoindre</td><td>Rally attaque</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 20 / 30</td></tr>
-            <tr><td></td><td>Rally défense</td><td>Patrick / Sergeï</td><td>60 / 20 / 20</td></tr>
-
-            <tr><td rowspan="2">CHASSE A L'OURS</td><td>Créer</td><td>Les plus forts (hors Gina)</td><td></td><td>20 / 40 / 40 ou 10 / 20 / 70</td></tr>
-            <tr><td>Rejoindre</td><td>Rally attaque</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>20 / 40 / 40 ou 10 / 20 / 70</td></tr>
-
-            <tr><td>CRAZY JOE</td><td></td><td></td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>70 / 30 / 0 ou 60 / 40 / 0</td></tr>
-
-            <tr><td rowspan="3">CHÂTEAU</td><td>Créer</td><td>Les plus forts (hors Gina)</td><td></td><td>50 / 30 / 20</td></tr>
-            <tr><td>Rejoindre</td><td>Rally attaque</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 30 / 20</td></tr>
-            <tr><td></td><td>Rally défense</td><td>Patrick / Sergeï</td><td>50 / 30 / 20</td></tr>
-
-            <tr><td rowspan="3">TOURELLES DU CHÂTEAU</td><td>Créer</td><td>Les plus forts (hors Gina)</td><td></td><td>40 / 20 / 40</td></tr>
-            <tr><td>Rejoindre</td><td>Rally attaque</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>40 / 20 / 40</td></tr>
-            <tr><td></td><td>Rally défense</td><td>Patrick / Sergeï</td><td>50 / 30 / 20</td></tr>
-
-            <tr><td rowspan="3">FONDERIE</td><td></td><td>Renforcement d'allié</td><td>Patrick / Sergeï</td><td>60 / 10 / 30 ou 50 / 20 / 30</td></tr>
-            <tr><td>Créer</td><td>Les plus forts (hors Gina)</td><td></td><td>50 / 20 / 30</td></tr>
-            <tr><td>Rejoindre</td><td>Rally attaque</td><td>Jessie / Seo-Yoon / Jasser / Reina</td><td>50 / 20 / 30</td></tr>
+            <tr><td colspan="5">Chargement des données...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <div class="discord-image-button">
-      <a id="discord-link" target="_blank">
-        <img src="/data/discord.png" alt="Rejoindre notre Discord" />
-      </a>
-    </div>
-
-    <script src="/data/config.js"></script>
-    <script>
-      document.getElementById('discord-link').href = discordLink;
-    </script>
+    <section class="section" style="margin-top: 40px;">
+      <h2 class="section-title">Liens utiles</h2>
+      <div class="scrollable-table">
+        <table class="styled-table" id="table-liens">
+          <thead>
+            <tr>
+              <th>Événement</th>
+              <th>Tuto (Français)</th>
+              <th>Tuto (English)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3">Chargement des données...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -83,5 +72,98 @@
       <p>&copy; 2025 Alliance WOS - Tous droits réservés.</p>
     </div>
   </footer>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzdncbEAoO_ABAJOhzCjQ1HRFkTcNe3fl1MNIg_o9Wrmc0WE0x1-UTechJQquTvhTbPoUukETEuE-Q/pub?output=csv";
+
+    const tutorielStart = 0;
+    const tutorielEnd = 15;
+    const liensStart = 20;
+    const liensEnd = 35;
+
+    function parseCSV(text) {
+      const lines = [];
+      let line = [];
+      let current = "";
+      let inQuotes = false;
+
+      for(let i = 0; i < text.length; i++) {
+        let c = text[i];
+        if(c === '"') {
+          if(inQuotes && text[i+1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if(c === ',' && !inQuotes) {
+          line.push(current);
+          current = "";
+        } else if((c === '\n' || c === '\r') && !inQuotes) {
+          if(c === '\r' && text[i+1] === '\n') i++;
+          line.push(current);
+          lines.push(line);
+          line = [];
+          current = "";
+        } else {
+          current += c;
+        }
+      }
+      if(current.length > 0 || line.length > 0) {
+        line.push(current);
+        lines.push(line);
+      }
+      return lines;
+    }
+
+    function fillTable(tableId, rows) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = "";
+
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+
+        const limitedRow = (tableId === "table-liens") ? row.slice(0, 3) : row;
+
+        limitedRow.forEach((cell, index) => {
+          const td = document.createElement('td');
+
+          if (tableId === "table-liens" && (index === 1 || index === 2) && cell.startsWith("http")) {
+            const a = document.createElement('a');
+            a.href = cell;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = (index === 1) ? "lien" : "link";
+            td.appendChild(a);
+          } else {
+            td.textContent = cell;
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(text => {
+        const rows = parseCSV(text);
+
+        const tutorielRows = rows.slice(tutorielStart, tutorielEnd + 1);
+        const liensRows = rows.slice(liensStart, liensEnd + 1);
+
+        fillTable("table-tutoriel", tutorielRows);
+        fillTable("table-liens", liensRows);
+      })
+      .catch(e => {
+        const errorMsg = [["Erreur de chargement"]];
+        fillTable("table-tutoriel", errorMsg);
+        fillTable("table-liens", errorMsg);
+        console.error(e);
+      });
+  </script>
+
 </body>
 </html>
